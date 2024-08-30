@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import memberReducer from './memberReducer';
+import { memberReducer } from './memberReducer';
+import { authReducer } from './authReducer';
 
 const rootReducer = combineReducers({
-  members: memberReducer,
+  auth: authReducer,
+  members: memberReducer
 });
 
 export default rootReducer;

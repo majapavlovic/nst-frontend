@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store';
-import { fetchMembersRequest } from '../redux/reducers/memberReducer';
+import { RootState } from '../redux/store';
+import { fetchMembersRequest } from '../redux/actions/membersActions';
+import { Member } from '../types';
 
-const MemberList: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const MembersComponent: React.FC = () => {
+  const dispatch = useDispatch();
+
   const members = useSelector((state: RootState) => state.members.members);
   const loading = useSelector((state: RootState) => state.members.loading);
   const error = useSelector((state: RootState) => state.members.error);
 
   useEffect(() => {
     dispatch(fetchMembersRequest());
-  }, [dispatch]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -25,12 +27,14 @@ const MemberList: React.FC = () => {
     <>
       <h1>Member List</h1>
       <ul>
-        {members.map((member) => (
-          <li key={member.id}>{member.firstName}, {member.lastName}</li>
+        {members.map((member: Member) => (
+          <li key={member.id}>
+            {member.firstName}, {member.lastName}
+          </li>
         ))}
       </ul>
     </>
   );
 };
 
-export default MemberList;
+export default MembersComponent;

@@ -1,13 +1,19 @@
 import React from 'react';
 import './App.css';
-import MemberList from './components/MemberList';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoginForm from './components/LoginForm';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import MembersComponent from './components/MembersComponent';
 
 function App() {
   return (
-    <div className="App">
-    <h1>Welcome to the Member Management App</h1>
-    <MemberList />
-  </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<h1>Welcome to University Administration App</h1>} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/members" element={<MembersComponent />} />
+      </Routes>
+    </Router>
   );
 }
 

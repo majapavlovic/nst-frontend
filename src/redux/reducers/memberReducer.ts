@@ -1,40 +1,32 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Member } from "../../types";
+import {
+  FETCH_MEMBERS_FAILURE,
+  FETCH_MEMBERS_REQUEST,
+  FETCH_MEMBERS_SUCCESS
+} from "../../types/actionTypes";
+
 
 interface MemberState {
-  members: { id: number; firstName: string, lastName: string }[];
   loading: boolean;
+  members: Member[];
   error: string | null;
 }
 
 const initialState: MemberState = {
-  members: [],
   loading: false,
+  members: [],
   error: null,
 };
 
-const memberSlice = createSlice({
-  name: 'members',
-  initialState,
-  reducers: {
-    fetchMembersRequest(state) {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchMembersSuccess(state, action: PayloadAction<{ id: number; firstName: string, lastName: string}[]>) {
-      state.loading = false;
-      state.members = action.payload;
-    },
-    fetchMembersFailure(state, action: PayloadAction<string>) {
-      state.loading = false;
-      state.error = action.payload;
-    },
-  },
-});
-
-export const {
-  fetchMembersRequest,
-  fetchMembersSuccess,
-  fetchMembersFailure,
-} = memberSlice.actions;
-
-export default memberSlice.reducer;
+export const memberReducer = (state = initialState, action: any): MemberState => {
+  switch (action.type) {
+    case FETCH_MEMBERS_REQUEST:
+      return { ...state, loading: true, error: null };
+    case FETCH_MEMBERS_SUCCESS:
+      return { ...state, loading: false, members: action.payload };
+    case FETCH_MEMBERS_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

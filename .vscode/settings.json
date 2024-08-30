@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "prettier.enable": false,
+  "prettier.endOfLine": "auto",
+  "prettier.bracketSameLine": true
+}
