@@ -8,7 +8,7 @@ import {
 } from '../actions/membersActions';
 import api from '../../config/axiosConfig';
 import { MemberRequest } from '../../types';
-import { ADD_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from '../../types/actionTypes';
+import { ADD_MEMBER_REQUEST, DELETE_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from '../../types/actionTypes';
 
 function* fetchMembers(): SagaIterator {
   try {
@@ -30,11 +30,23 @@ function* addMember(action: { type: string; payload: MemberRequest }): SagaItera
   }
 }
 
+function* deleteMember(action: { type: string; payload: number }): SagaIterator {
+  try {
+    const { payload } = action;
+    const response = yield call(api.delete, `/member/${payload}`);
+    yield put(addMemberSuccess(response));
+  } catch (error: any) {
+    yield put(addMemberFailure(error.message));
+  }
+}
+
 
 export function* memberSaga(): SagaIterator {
   yield all([
     takeLatest(FETCH_MEMBERS_REQUEST, fetchMembers),
     takeLatest(ADD_MEMBER_REQUEST, addMember),
+    takeLatest(DELETE_MEMBER_REQUEST, deleteMember),
+
   ]);
 
 

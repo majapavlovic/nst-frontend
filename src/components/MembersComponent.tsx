@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
-import { fetchMembersRequest } from '../redux/actions/membersActions';
+import { deleteMemberRequest, fetchMembersRequest } from '../redux/actions/membersActions';
 import { Member } from '../types';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -25,7 +25,7 @@ const MembersComponent: React.FC = () => {
   }
 
   const handleDeleteMember = (id: number) => {
-    console.log(id);
+    dispatch(deleteMemberRequest(id));
   }
 
   return (

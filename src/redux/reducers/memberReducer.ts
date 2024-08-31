@@ -3,6 +3,8 @@ import {
   ADD_MEMBER_FAILURE,
   ADD_MEMBER_REQUEST,
   ADD_MEMBER_SUCCESS,
+  DELETE_MEMBER_FAILURE,
+  DELETE_MEMBER_SUCCESS,
   FETCH_MEMBERS_FAILURE,
   FETCH_MEMBERS_REQUEST,
   FETCH_MEMBERS_SUCCESS
@@ -19,6 +21,10 @@ interface MemberState {
     loading: boolean;
     member: Member;
     error: string | null;
+  },
+  deleteMember: {
+    message: string;
+    error: string;
   }
 }
 
@@ -39,6 +45,10 @@ const initialState: MemberState = {
       scientificField: { id: 0, scientificField: "" }
     },
     error: null
+  },
+  deleteMember: {
+    message: "",
+    error: ""
   }
 };
 
@@ -62,6 +72,12 @@ export const memberReducer = (state = initialState, action: any): MemberState =>
 
     case ADD_MEMBER_FAILURE:
       return { ...state, addMember: { ...state.addMember, loading: false, error: action.payload } };
+
+    case DELETE_MEMBER_SUCCESS:
+      return { ...state, deleteMember: { ...state.deleteMember, message: action.payload } };
+
+    case DELETE_MEMBER_FAILURE:
+      return { ...state, deleteMember: { ...state.deleteMember, error: action.payload } };
 
     default:
       return state;
