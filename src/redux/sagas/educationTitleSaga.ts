@@ -6,7 +6,6 @@ import { FETCH_EDUCATION_TITLES_REQUEST } from "../../types/actionTypes";
 
 function* fetchEducationTitles(): SagaIterator {
     try {
-        console.log("FETCH ED TITLE CALLED");
         const response = yield call(api.get, '/education-title');
         yield put(fetchEducationTitlesSuccess(response.data));
     } catch (error: any) {

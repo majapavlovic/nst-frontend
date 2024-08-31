@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MembersComponent from './components/MembersComponent';
 import AddMemberForm from './components/AddMemberForm';
+import UpdateMemberForm from './components/UpdateMemberForm';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<h1>Welcome to University Administration App</h1>} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/add-member" element={<AddMemberForm />} />
+        <Route path="/update-member/:id" element={<UpdateMemberForm />} />
         <Route path="/members" element={<MembersComponent />} />
       </Routes>
     </Router>

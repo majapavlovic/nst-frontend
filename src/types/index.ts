@@ -15,6 +15,14 @@ export interface MemberRequest {
     scientificFieldId: number;
 }
 
+export interface UpdateMemberRequest {
+    id: number;
+    firstName: string;
+    lastName: string;
+    academicTitleId: number;
+    educationTitleId: number;
+    scientificFieldId: number;
+}
 
 export interface AcademicTitle {
     id: number;
