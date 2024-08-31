@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { fetchMembersRequest } from '../redux/actions/membersActions';
 import { Member } from '../types';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const MembersComponent: React.FC = () => {
@@ -22,6 +22,10 @@ const MembersComponent: React.FC = () => {
 
   if (members.error) {
     return <div>Error: {members.error}</div>;
+  }
+
+  const handleDeleteMember = (id: number) => {
+    console.log(id);
   }
 
   return (
@@ -47,6 +51,7 @@ const MembersComponent: React.FC = () => {
               <td>{member.academicTitle?.academicTitle || ""}</td>
               <td>{member.educationTitle?.educationTitle || ""}</td>
               <td>{member.scientificField?.scientificField || ""}</td>
+              <td><Button onClick={() => handleDeleteMember(member.id)}>Delete member</Button></td>
             </tr>
           ))}
         </tbody>

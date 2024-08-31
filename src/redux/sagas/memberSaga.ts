@@ -7,13 +7,14 @@ import {
   addMemberFailure,
 } from '../actions/membersActions';
 import api from '../../config/axiosConfig';
-import { Member, MemberRequest } from '../../types';
+import { MemberRequest } from '../../types';
 import { ADD_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from '../../types/actionTypes';
 
 function* fetchMembers(): SagaIterator {
   try {
     const response = yield call(api.get, '/member');
     yield put(fetchMembersSuccess(response.data));
+    console.log(response);
   } catch (error: any) {
     yield put(fetchMembersFailure(error.message));
   }
@@ -29,11 +30,13 @@ function* addMember(action: { type: string; payload: MemberRequest }): SagaItera
   }
 }
 
+
 export function* memberSaga(): SagaIterator {
   yield all([
     takeLatest(FETCH_MEMBERS_REQUEST, fetchMembers),
     takeLatest(ADD_MEMBER_REQUEST, addMember),
   ]);
+
 
 }
 
