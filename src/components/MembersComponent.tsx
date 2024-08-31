@@ -3,36 +3,54 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { fetchMembersRequest } from '../redux/actions/membersActions';
 import { Member } from '../types';
+import { Col, Container, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const MembersComponent: React.FC = () => {
   const dispatch = useDispatch();
 
-  const members = useSelector((state: RootState) => state.members.members);
-  const loading = useSelector((state: RootState) => state.members.loading);
-  const error = useSelector((state: RootState) => state.members.error);
+  const members = useSelector((state: RootState) => state.members.allMembers);
+
 
   useEffect(() => {
     dispatch(fetchMembersRequest());
   }, []);
 
-  if (loading) {
+  if (members.loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (members.error) {
+    return <div>Error: {members.error}</div>;
   }
 
   return (
     <>
-      <h1>Member List</h1>
-      <ul>
-        {members.map((member: Member) => (
-          <li key={member.id}>
-            {member.firstName}, {member.lastName}
-          </li>
-        ))}
-      </ul>
+      <h2>Member Administration</h2>
+      <Link to="/add-member">Add new Member</Link>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Academic Title</th>
+            <th scope="col">Education Title</th>
+            <th scope="col">Scientific Field</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {members.members.map((member: Member) => (
+            <tr key={member.id}>
+              <td>{member.firstName}</td>
+              <td>{member.lastName}</td>
+              <td>{member.academicTitle?.academicTitle || ""}</td>
+              <td>{member.educationTitle?.educationTitle || ""}</td>
+              <td>{member.scientificField?.scientificField || ""}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };

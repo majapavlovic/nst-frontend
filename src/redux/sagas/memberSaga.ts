@@ -1,16 +1,14 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
+import { call, put, all, takeLatest } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import {
   fetchMembersSuccess,
   fetchMembersFailure,
+  addMemberSuccess,
+  addMemberFailure,
 } from '../actions/membersActions';
-import { FETCH_MEMBERS_REQUEST } from '../../types/actionTypes';
 import api from '../../config/axiosConfig';
-
-const fetchMembersApi = () => {
-  return axios.get<{ id: number; firstName: string, lastName: string }[]>(`${process.env.REACT_APP_API_URL}/member`);
-};
+import { Member, MemberRequest } from '../../types';
+import { ADD_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from '../../types/actionTypes';
 
 function* fetchMembers(): SagaIterator {
   try {
@@ -21,8 +19,22 @@ function* fetchMembers(): SagaIterator {
   }
 }
 
+function* addMember(action: { type: string; payload: MemberRequest }): SagaIterator {
+  try {
+    const { payload } = action;
+    const response = yield call(api.post, '/member', payload);
+    yield put(addMemberSuccess(response));
+  } catch (error: any) {
+    yield put(addMemberFailure(error.message));
+  }
+}
+
 export function* memberSaga(): SagaIterator {
-  yield takeLatest(FETCH_MEMBERS_REQUEST, fetchMembers);
+  yield all([
+    takeLatest(FETCH_MEMBERS_REQUEST, fetchMembers),
+    takeLatest(ADD_MEMBER_REQUEST, addMember),
+  ]);
+
 }
 
 export default memberSaga;

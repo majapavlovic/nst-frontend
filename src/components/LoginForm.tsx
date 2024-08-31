@@ -1,13 +1,13 @@
-import { Col, Container, Row, Form, Button } from "react-bootstrap";
+import { Col, Container, Row, Form, Button, Alert } from "react-bootstrap";
 import '../styles/LoginForm.css';
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../redux/actions/authActions";
+import { RootState } from "../redux/store";
 
 const LoginForm: React.FC = () => {
     const dispatch = useDispatch();
-    // const loading = useSelector((state: RootState) => state.auth.loading);
-    // const error = useSelector((state: RootState) => state.auth.error);
+    const { loading, error } = useSelector((state: RootState) => state.auth);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -20,6 +20,7 @@ const LoginForm: React.FC = () => {
         <Container className="login-form-container">
             <Row className="login-wrapper">
                 <Col xs={12} md={6}>
+                    {error && <Alert variant="danger">{error}</Alert>}
                     <h2 className="login-title">Login</h2>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
@@ -35,7 +36,7 @@ const LoginForm: React.FC = () => {
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="Password"
+                                placeholder="Enter Password"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </Form.Group>
