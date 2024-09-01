@@ -7,6 +7,10 @@ import {
   addMemberFailure,
   getMemberSuccess,
   getMemberFailure,
+  deleteMemberSuccess,
+  deleteMemberFailure,
+  updateMemberSuccess,
+  updateMemberFailure,
 } from '../actions/membersActions';
 import api from '../../config/axiosConfig';
 import { MemberRequest, UpdateMemberRequest } from '../../types';
@@ -24,7 +28,12 @@ function* fetchMembers(): SagaIterator {
     yield put(fetchMembersSuccess(response.data));
     console.log(response);
   } catch (error: any) {
-    yield put(fetchMembersFailure(error.message));
+    if (error.response?.data?.message != null) {
+      yield put(fetchMembersFailure(error.response.data.message));
+    }
+    else {
+      yield put(fetchMembersFailure(error.message));
+    }
   }
 }
 
@@ -34,7 +43,12 @@ function* addMember(action: { type: string; payload: MemberRequest }): SagaItera
     const response = yield call(api.post, '/member', payload);
     yield put(addMemberSuccess(response));
   } catch (error: any) {
-    yield put(addMemberFailure(error.message));
+    if (error.response?.data?.message != null) {
+      yield put(addMemberFailure(error.response.data.message));
+    }
+    else {
+      yield put(addMemberFailure(error.message));
+    }
   }
 }
 
@@ -42,9 +56,14 @@ function* deleteMember(action: { type: string; payload: number }): SagaIterator 
   try {
     const { payload } = action;
     const response = yield call(api.delete, `/member/${payload}`);
-    yield put(addMemberSuccess(response));
+    yield put(deleteMemberSuccess(response));
   } catch (error: any) {
-    yield put(addMemberFailure(error.message));
+    if (error.response?.data?.message != null) {
+      yield put(deleteMemberFailure(error.response.data.message));
+    }
+    else {
+      yield put(deleteMemberFailure(error.message));
+    }
   }
 }
 
@@ -52,9 +71,14 @@ function* updateMember(action: { type: string; payload: UpdateMemberRequest }): 
   try {
     const { payload } = action;
     const response = yield call(api.put, '/member', payload);
-    yield put(addMemberSuccess(response));
+    yield put(updateMemberSuccess(response));
   } catch (error: any) {
-    yield put(addMemberFailure(error.message));
+    if (error.response?.data?.message != null) {
+      yield put(updateMemberFailure(error.response.data.message));
+    }
+    else {
+      yield put(updateMemberFailure(error.message));
+    }
   }
 }
 
@@ -64,7 +88,12 @@ function* getMember(action: { type: string; payload: string }): SagaIterator {
     const response = yield call(api.get, `/member/${payload}`);
     yield put(getMemberSuccess(response.data));
   } catch (error: any) {
-    yield put(getMemberFailure(error.message));
+    if (error.response?.data?.message != null) {
+      yield put(getMemberFailure(error.response.data.message));
+    }
+    else {
+      yield put(getMemberFailure(error.message));
+    }
   }
 }
 

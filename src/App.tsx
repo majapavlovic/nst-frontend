@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MembersComponent from './components/MembersComponent';
@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<h1>Welcome to University Administration App</h1>} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/add-member" element={<AddMemberForm />} />
         <Route path="/update-member/:id" element={<UpdateMemberForm />} />

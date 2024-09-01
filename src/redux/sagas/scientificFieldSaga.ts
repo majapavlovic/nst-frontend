@@ -9,7 +9,12 @@ function* fetchScientificFields(): SagaIterator {
         const response = yield call(api.get, '/scientific-field');
         yield put(fetchScientificFieldsSuccess(response.data));
     } catch (error: any) {
-        yield put(fetchScientificFieldsFailure(error.message));
+        if (error.response?.data?.message != null) {
+            yield put(fetchScientificFieldsFailure(error.response.data.message));
+        }
+        else {
+            yield put(fetchScientificFieldsFailure(error.message));
+        }
     }
 }
 

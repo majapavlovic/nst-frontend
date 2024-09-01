@@ -6,6 +6,7 @@ import { getMemberRequest, updateMemberRequest } from "../redux/actions/membersA
 import { fetchAcademicTitlesRequest } from "../redux/actions/academicTitleActions";
 import { fetchEducationTitlesRequest } from "../redux/actions/educationTitleActions";
 import { fetchScientificFieldsRequest } from "../redux/actions/scientificFieldActions";
+import '../styles/MemberForm.css';
 
 const UpdateMemberForm: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -64,7 +65,7 @@ const UpdateMemberForm: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="form-container">
             <h2>Update Member</h2>
             <form onSubmit={handleSubmit}>
                 <div>

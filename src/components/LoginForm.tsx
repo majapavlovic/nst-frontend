@@ -1,13 +1,15 @@
 import { Col, Container, Row, Form, Button, Alert } from "react-bootstrap";
 import '../styles/LoginForm.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../redux/actions/authActions";
 import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm: React.FC = () => {
     const dispatch = useDispatch();
-    const { loading, error } = useSelector((state: RootState) => state.auth);
+    const navigate = useNavigate();
+    const { loading, error, accessToken, user } = useSelector((state: RootState) => state.auth);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -15,6 +17,12 @@ const LoginForm: React.FC = () => {
         event.preventDefault();
         dispatch(loginRequest(username, password));
     };
+
+    useEffect(() => {
+        if (accessToken && user) {
+            navigate('/members');
+        }
+    }, [accessToken, user]);
 
     return (
         <Container className="login-form-container">

@@ -9,7 +9,12 @@ function* fetchAcademicTitles(): SagaIterator {
         const response = yield call(api.get, '/academic-title');
         yield put(fetchAcademicTitlesSuccess(response.data));
     } catch (error: any) {
-        yield put(fetchAcademicTitlesFailure(error.message));
+        if (error.response?.data?.message != null) {
+            yield put(fetchAcademicTitlesFailure(error.response.data.message));
+        }
+        else {
+            yield put(fetchAcademicTitlesFailure(error.message));
+        }
     }
 }
 

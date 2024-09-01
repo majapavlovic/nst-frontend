@@ -5,7 +5,7 @@ import { fetchAcademicTitlesRequest } from "../redux/actions/academicTitleAction
 import { fetchEducationTitlesRequest } from "../redux/actions/educationTitleActions";
 import { fetchScientificFieldsRequest } from "../redux/actions/scientificFieldActions";
 import { addMemberRequest } from "../redux/actions/membersActions";
-
+import '../styles/MemberForm.css';
 
 const AddMemberForm: React.FC = () => {
     const [memberData, setMemberData] = useState({
@@ -37,7 +37,7 @@ const AddMemberForm: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="form-container">
             <h2>Add New Member</h2>
             <form onSubmit={handleSubmit}>
                 <div>

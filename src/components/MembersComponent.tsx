@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { deleteMemberRequest, fetchMembersRequest } from '../redux/actions/membersActions';
 import { Member } from '../types';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 
 const MembersComponent: React.FC = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const members = useSelector((state: RootState) => state.members.allMembers);
 
 
@@ -31,7 +31,7 @@ const MembersComponent: React.FC = () => {
   return (
     <>
       <h2>Member Administration</h2>
-      <Link to="/add-member">Add new Member</Link>
+      <Button onClick={() => navigate("/add-member")}>Add new Member</Button>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -45,13 +45,13 @@ const MembersComponent: React.FC = () => {
         </thead>
         <tbody>
           {members.members.map((member: Member) => (
-            <tr key={member.id}>
+            <tr key={member.id} onClick={() => navigate(`/update-member/${member.id}`)}>
               <td>{member.firstName}</td>
               <td>{member.lastName}</td>
               <td>{member.academicTitle?.academicTitle || ""}</td>
               <td>{member.educationTitle?.educationTitle || ""}</td>
               <td>{member.scientificField?.scientificField || ""}</td>
-              <td><Button onClick={() => handleDeleteMember(member.id)}>Delete member</Button></td>
+              <td><Button onClick={() => handleDeleteMember(member.id)}>Delete</Button></td>
             </tr>
           ))}
         </tbody>
