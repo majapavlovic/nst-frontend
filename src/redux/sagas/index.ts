@@ -4,6 +4,8 @@ import { memberSaga } from './memberSaga';
 import academicTitleSaga from './academicTitleSaga';
 import educationTitleSaga from './educationTitleSaga';
 import scientificFieldSaga from './scientificFieldSaga';
+import departmentSaga from './departmentSaga';
+import subjectSaga from './subjectSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -11,6 +13,8 @@ export default function* rootSaga() {
     memberSaga(),
     academicTitleSaga(),
     educationTitleSaga(),
-    scientificFieldSaga()
+    scientificFieldSaga(),
+    departmentSaga(),
+    subjectSaga()
   ]);
 }

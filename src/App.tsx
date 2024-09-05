@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import MembersComponent from './components/MembersComponent';
 import AppNavbar from './components/Navbar';
 import MemberForm from './components/MemberForm';
+import DepartmentsComponent from './components/DepartmentsComponent';
+import SubjectsComponent from './components/SubjectsComponent';
 
 function App() {
 
@@ -17,11 +19,11 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<LoginForm />} />
-      {/* <Route path="/add-member" element={<AddMemberForm />} />
-      <Route path="/update-member/:id" element={<UpdateMemberForm />} /> */}
-       <Route path="/add-member" element={<MemberForm />} />
-       <Route path="/update-member/:id" element={<MemberForm />} />
+      <Route path="/add-member" element={<MemberForm />} />
+      <Route path="/update-member/:id" element={<MemberForm />} />
       <Route path="/members" element={<MembersComponent />} />
+      <Route path="/departments" element={<DepartmentsComponent />} />
+      <Route path="/subjects" element={<SubjectsComponent />} />
     </Routes>
   </>
   );
