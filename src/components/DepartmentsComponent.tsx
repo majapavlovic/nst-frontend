@@ -4,13 +4,12 @@ import { RootState } from "../redux/store";
 import { fetchDepartmentsRequest } from "../redux/actions/departmentActions";
 import { Department } from "../types";
 
-
-
 const DepartmentsComponent: React.FC = () => {
   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-  const { departments, loading, error }= useSelector((state: RootState) => state.departments);
-
+  //   const navigate = useNavigate();
+  const { departments, loading, error } = useSelector(
+    (state: RootState) => state.departments.allDepartments
+  );
 
   useEffect(() => {
     dispatch(fetchDepartmentsRequest());
@@ -27,11 +26,11 @@ const DepartmentsComponent: React.FC = () => {
   return (
     <>
       <h2>Departments Administration</h2>
-      <table className="table table-striped">
+      <table className='table table-striped'>
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Short name</th>
+            <th scope='col'>Name</th>
+            <th scope='col'>Short name</th>
           </tr>
         </thead>
         <tbody>

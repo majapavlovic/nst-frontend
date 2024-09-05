@@ -22,8 +22,8 @@ const MembersComponent: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  if (members.error) {
-    return <div>Error: {members.error}</div>;
+  if (members.error) { 
+    return <div>Error:    {members.error}</div>;
   }
 
   const handleDeleteMember = (id: number) => {
