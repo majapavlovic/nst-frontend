@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { RootState } from "../redux/store";
-import { getMemberRequest, updateMemberRequest } from "../redux/actions/membersActions";
+import { addMemberRequest, getMemberRequest, updateMemberRequest } from "../redux/actions/membersActions";
 import { fetchAcademicTitlesRequest } from "../redux/actions/academicTitleActions";
 import { fetchEducationTitlesRequest } from "../redux/actions/educationTitleActions";
 import { fetchScientificFieldsRequest } from "../redux/actions/scientificFieldActions";
 import '../styles/MemberForm.css';
 
-const UpdateMemberForm: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const numericId = Number(id);
+const MemberForm: React.FC = () => {
+    const { id } = useParams<{ id?: string }>();
     const dispatch = useDispatch();
+    
     const [memberData, setMemberData] = useState({
-        id: 0,
         firstName: "",
         lastName: "",
         academicTitleId: 0,
@@ -26,17 +25,21 @@ const UpdateMemberForm: React.FC = () => {
     const educationTitles = useSelector((state: RootState) => state.educationTitles);
     const scientificFields = useSelector((state: RootState) => state.scientificFields);
 
+    const isUpdateMode = Boolean(id); 
+
     useEffect(() => {
         dispatch(fetchAcademicTitlesRequest());
         dispatch(fetchEducationTitlesRequest());
         dispatch(fetchScientificFieldsRequest());
-        dispatch(getMemberRequest(numericId));
-    }, [dispatch, numericId]);
+
+        if (isUpdateMode) {
+            dispatch(getMemberRequest(Number(id)));
+        }
+    }, [dispatch, isUpdateMode, id]);
 
     useEffect(() => {
-        if (member) {
+        if (isUpdateMode && member) {
             setMemberData({
-                id: member.id || 0,
                 firstName: member.firstName || "",
                 lastName: member.lastName || "",
                 academicTitleId: member.academicTitle?.id || 0,
@@ -44,29 +47,28 @@ const UpdateMemberForm: React.FC = () => {
                 scientificFieldId: member.scientificField?.id || 0,
             });
         }
-    }, [member]);
+    }, [isUpdateMode, member]);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        dispatch(updateMemberRequest(memberData));
+        if (isUpdateMode) {
+            dispatch(updateMemberRequest({ ...memberData, id: Number(id) }));
+        } else {
+            dispatch(addMemberRequest(memberData));
+        }
     };
 
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
+    const handleInputChange = (e:any) => {
+        const {name, value} = e.target;
         setMemberData(prevData => ({
             ...prevData,
-            [name]:
-                name === 'academicTitleId' ||
-                    name === 'educationTitleId' ||
-                    name === 'scientificFieldId'
-                    ? Number(value)
-                    : value,
+            [name] : value,
         }));
     };
 
     return (
         <div className="form-container">
-            <h2>Update Member</h2>
+            <h2>{isUpdateMode ? "Update Member" : "Add New Member"}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="firstName">First Name:</label>
@@ -99,7 +101,7 @@ const UpdateMemberForm: React.FC = () => {
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={0}>Select Academic Title</option>
+                        <option value="">Select Academic Title</option>
                         {academicTitles.academicTitles?.map((title) => (
                             <option key={title.id} value={title.id}>
                                 {title.academicTitle}
@@ -116,7 +118,7 @@ const UpdateMemberForm: React.FC = () => {
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={0}>Select Education Title</option>
+                        <option value="">Select Education Title</option>
                         {educationTitles.educationTitles?.map((title) => (
                             <option key={title.id} value={title.id}>
                                 {title.educationTitle}
@@ -133,7 +135,7 @@ const UpdateMemberForm: React.FC = () => {
                         onChange={handleInputChange}
                         required
                     >
-                        <option value={0}>Select Scientific Field</option>
+                        <option value="">Select Scientific Field</option>
                         {scientificFields.scientificFields?.map((field) => (
                             <option key={field.id} value={field.id}>
                                 {field.scientificField}
@@ -141,11 +143,13 @@ const UpdateMemberForm: React.FC = () => {
                         ))}
                     </select>
                 </div>
-                <button type="submit" disabled={loading}>Update Member</button>
+                <button type="submit" disabled={loading}>
+                    {isUpdateMode ? "Update Member" : "Add Member"}
+                </button>
                 {error && <div className="error">{error}</div>}
             </form>
         </div>
     );
 };
 
-export default UpdateMemberForm;
+export default MemberForm;

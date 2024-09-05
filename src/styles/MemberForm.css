@@ -34,7 +34,7 @@
 .form-container button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #1b283a;
     color: white;
     font-size: 16px;
     border: none;
@@ -43,7 +43,7 @@
 }
 
 .form-container button:hover {
-    background-color: #0056b3;
+    background-color: #1b283a;
 }
 
 .form-container .error {

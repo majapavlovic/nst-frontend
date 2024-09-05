@@ -4,7 +4,9 @@ import { RootState } from '../redux/store';
 import { deleteMemberRequest, fetchMembersRequest } from '../redux/actions/membersActions';
 import { Member } from '../types';
 import { Button } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import '../styles/MemberForm.css';
+
 
 const MembersComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +34,9 @@ const MembersComponent: React.FC = () => {
     <>
       <h2>Member Administration</h2>
       <Button onClick={() => navigate("/add-member")}>Add new Member</Button>
-      <table className="table table-striped">
+      <table className="table table-striped"
+      //  className="form-container"
+      >
         <thead>
           <tr>
             <th scope="col">First name</th>
