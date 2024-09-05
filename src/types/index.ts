@@ -53,6 +53,7 @@ export interface Subject {
 }
 
 export interface SubjectRequest {
+  id?: number;
   name: string;
   espb: number;
   departmentId: number;

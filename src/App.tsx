@@ -15,6 +15,7 @@ import MemberForm from "./components/MemberForm";
 import DepartmentsComponent from "./components/DepartmentsComponent";
 import SubjectsComponent from "./components/SubjectsComponent";
 import DepartmentForm from "./components/DepartmentForm";
+import SubjectForm from "./components/SubjectForm";
 
 function App() {
   const location = useLocation();
@@ -30,9 +31,11 @@ function App() {
         <Route path='/update-member/:id' element={<MemberForm />} />
         <Route path='/members' element={<MembersComponent />} />
         <Route path='/departments' element={<DepartmentsComponent />} />
-        <Route path='/subjects' element={<SubjectsComponent />} />
         <Route path='/add-department' element={<DepartmentForm />} />
         <Route path='/update-department/:id' element={<DepartmentForm />} />
+        <Route path='/subjects' element={<SubjectsComponent />} />
+        <Route path='/add-subject' element={<SubjectForm />} />
+        <Route path='/update-subject/:id' element={<SubjectForm />} />
       </Routes>
     </>
   );

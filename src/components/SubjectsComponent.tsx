@@ -6,9 +6,10 @@ import { Subject } from "../types";
 
 const SubjectsComponent: React.FC = () => {
   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-  const {subjects, loading, error} = useSelector((state: RootState) => state.subjects);
-
+  //   const navigate = useNavigate();
+  const { subjects, loading, error } = useSelector(
+    (state: RootState) => state.subjects.allSubjects
+  );
 
   useEffect(() => {
     dispatch(fetchSubjectsRequest());
@@ -25,12 +26,12 @@ const SubjectsComponent: React.FC = () => {
   return (
     <>
       <h2>Subjects Administration</h2>
-      <table className="table table-striped">
+      <table className='table table-striped'>
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">ESPB</th>
-            <th scope="col">Department</th>
+            <th scope='col'>Name</th>
+            <th scope='col'>ESPB</th>
+            <th scope='col'>Department</th>
           </tr>
         </thead>
         <tbody>
