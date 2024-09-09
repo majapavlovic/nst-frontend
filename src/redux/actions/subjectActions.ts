@@ -15,6 +15,9 @@ import {
   UPDATE_SUBJECT_REQUEST,
   UPDATE_SUBJECT_SUCCESS,
   UPDATE_SUBJECT_FAILURE,
+  FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
+  FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS,
+  FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
 } from "../../types/actionTypes";
 
 export const fetchSubjectsRequest = () => ({
@@ -89,4 +92,19 @@ export const updateSubjectSuccess = (payload: Subject) => ({
 export const updateSubjectFailure = (payload: string) => ({
   type: UPDATE_SUBJECT_FAILURE,
   payload,
+});
+
+export const fetchSubjectsByDepartmentRequest = (payload: number) => ({
+  type: FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
+  payload,
+});
+
+export const fetchSubjectsByDepartmentSuccess = (subjects: Subject[]) => ({
+  type: FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS,
+  payload: subjects,
+});
+
+export const fetchSubjectsByDepartmentFailure = (error: string) => ({
+  type: FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
+  payload: error,
 });

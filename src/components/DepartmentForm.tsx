@@ -7,6 +7,7 @@ import {
   getDepartmentsRequest,
   updateDepartmentRequest,
 } from "../redux/actions/departmentActions";
+import { Alert } from "react-bootstrap";
 
 const DepartmentForm: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -17,9 +18,19 @@ const DepartmentForm: React.FC = () => {
     shortName: "",
   });
 
+  const [alertError, setAlertError] = useState("");
+  const [alertSuccess, setAlertSuccess] = useState("");
+
   const { loading, error, department } = useSelector(
     (state: RootState) => state.departments.getDepartment
   );
+  const savedDept = useSelector(
+    (state: RootState) => state.departments.addDepartment.success
+  );
+  const savedErr = useSelector(
+    (state: RootState) => state.departments.addDepartment.error
+  );
+
   const isUpdateMode = Boolean(id);
 
   useEffect(() => {
@@ -46,16 +57,29 @@ const DepartmentForm: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (savedErr) setAlertError(savedErr);
+    if (error) setAlertError(error);
+  }, [error, savedErr]);
+
+  useEffect(() => {
+    if (savedDept) setAlertSuccess("Success");
+  }, [savedDept]);
+
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setDepartmentData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+    setAlertError("");
+    setAlertSuccess("");
   };
 
   return (
     <div className='form-container'>
+      {alertSuccess && <Alert variant='success'>{alertSuccess}</Alert>}
+      {alertError && <Alert variant='danger'>{alertError}</Alert>}
       <h2>{isUpdateMode ? "Update Department" : "Add New Department"}</h2>
       <form onSubmit={handleSubmit}>
         <div>

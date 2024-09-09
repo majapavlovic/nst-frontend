@@ -6,6 +6,11 @@ import {
   GET_DEPARTMENT_REQUEST,
   GET_DEPARTMENT_SUCCESS,
   GET_DEPARTMENT_FAILURE,
+  ADD_DEPARTMENT_REQUEST,
+  ADD_DEPARTMENT_SUCCESS,
+  ADD_DEPARTMENT_FAILURE,
+  DELETE_DEPARTMENT_SUCCESS,
+  DELETE_DEPARTMENT_FAILURE,
 } from "../../types/actionTypes";
 
 interface DepartmentState {
@@ -19,9 +24,20 @@ interface DepartmentState {
     department: Department;
     error: string | null;
   };
+  addDepartment: {
+    loading: boolean;
+    department: Department;
+    error: string | null;
+    success: boolean;
+  };
+  deleteDepartment: {
+    message: string;
+    error: string;
+  };
 }
 
 const initialDepartment = {
+  success: false,
   loading: false,
   error: null,
   department: {
@@ -38,6 +54,11 @@ const initialState: DepartmentState = {
     error: null,
   },
   getDepartment: initialDepartment,
+  addDepartment: initialDepartment,
+  deleteDepartment: {
+    message: "",
+    error: "",
+  },
 };
 export const departmentReducer = (
   state = initialState,
@@ -94,6 +115,53 @@ export const departmentReducer = (
           loading: false,
           error: action.payload,
         },
+      };
+
+    case ADD_DEPARTMENT_REQUEST:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: true,
+          error: null,
+          success: false,
+        },
+      };
+
+    case ADD_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: false,
+          department: action.payload,
+          success: true,
+        },
+      };
+
+    case ADD_DEPARTMENT_FAILURE:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: false,
+          error: action.payload,
+        },
+      };
+
+    case DELETE_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        deleteDepartment: {
+          ...state.deleteDepartment,
+          message: action.payload,
+        },
+      };
+
+    case DELETE_DEPARTMENT_FAILURE:
+      return {
+        ...state,
+        deleteDepartment: { ...state.deleteDepartment, error: action.payload },
       };
 
     default:

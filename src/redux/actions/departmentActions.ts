@@ -1,4 +1,4 @@
-import { Department } from "../../types";
+import { Department, DepartmentRequest } from "../../types";
 import {
   FETCH_DEPARTMENTS_SUCCESS,
   FETCH_DEPARTMENTS_REQUEST,
@@ -46,7 +46,7 @@ export const getDepartmentsFailure = (error: string) => ({
   payload: error,
 });
 
-export const addDepartmentRequest = (payload: Department) => ({
+export const addDepartmentRequest = (payload: DepartmentRequest) => ({
   type: ADD_DEPARTMENT_REQUEST,
   payload,
 });

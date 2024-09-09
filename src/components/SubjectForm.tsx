@@ -8,20 +8,35 @@ import {
   updateSubjectRequest,
 } from "../redux/actions/subjectActions";
 import { fetchDepartmentsRequest } from "../redux/actions/departmentActions";
+import { Alert } from "react-bootstrap";
 
 const SubjectForm: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
+  const { id, deptId } = useParams<{ id?: string; deptId?: string }>();
   const dispatch = useDispatch();
 
   const [subjectData, setSubjectData] = useState({
     name: "",
     espb: 0,
-    departmentId: 0,
+    departmentId: deptId ? Number(deptId) : 0,
   });
+
+  const [isDeptDisabled] = useState(!!deptId);
+
+  const [alertError, setAlertError] = useState("");
+  const [alertSuccess, setAlertSuccess] = useState("");
 
   const { loading, error, subject } = useSelector(
     (state: RootState) => state.subjects.getSubject
   );
+
+  const savedError = useSelector(
+    (state: RootState) => state.subjects.addSubject.error
+  );
+
+  const savedSubject = useSelector(
+    (state: RootState) => state.subjects.addSubject.success
+  );
+
   const { departments } = useSelector(
     (state: RootState) => state.departments.allDepartments
   );
@@ -40,10 +55,16 @@ const SubjectForm: React.FC = () => {
       setSubjectData({
         name: subject.name,
         espb: subject.espb,
-        departmentId: subject.department?.id || 0,
+        departmentId: deptId ? Number(deptId) : subject.department?.id || 0,
       });
     }
-  }, [isUpdateMode, subject]);
+  }, [isUpdateMode, subject, deptId]);
+
+  useEffect(() => {
+    if (savedSubject) setAlertSuccess("Success");
+    else if (savedError) setAlertError(savedError);
+    else if (error) setAlertError(error);
+  }, [savedSubject, error, savedError]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -60,10 +81,14 @@ const SubjectForm: React.FC = () => {
       ...prevData,
       [name]: value,
     }));
+    setAlertError("");
+    setAlertSuccess("");
   };
 
   return (
     <div className='form-container'>
+      {alertSuccess && <Alert variant='success'>{alertSuccess}</Alert>}
+      {alertError && <Alert variant='danger'>{alertError}</Alert>}
       <h2>{isUpdateMode ? "Update Subject" : "Add New Subject"}</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -95,6 +120,7 @@ const SubjectForm: React.FC = () => {
             name='departmentId'
             value={subjectData.departmentId}
             onChange={handleInputChange}
+            disabled={isDeptDisabled}
             required>
             <option value=''>Select Department</option>
             {departments.map((dept) => (
@@ -107,7 +133,6 @@ const SubjectForm: React.FC = () => {
         <button type='submit' disabled={loading}>
           {isUpdateMode ? "Update Subject" : "Add Subject"}
         </button>
-        {error && <div className='error'>{error}</div>}
       </form>
     </div>
   );

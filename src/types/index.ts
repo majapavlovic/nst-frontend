@@ -40,7 +40,12 @@ export interface ScientificField {
 }
 
 export interface Department {
-  id?: number;
+  id: number;
+  name: string;
+  shortName: string;
+}
+
+export interface DepartmentRequest {
   name: string;
   shortName: string;
 }

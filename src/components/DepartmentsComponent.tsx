@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { fetchDepartmentsRequest } from "../redux/actions/departmentActions";
+import {
+  deleteDepartmentRequest,
+  fetchDepartmentsRequest,
+} from "../redux/actions/departmentActions";
 import { Department } from "../types";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const DepartmentsComponent: React.FC = () => {
   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { departments, loading, error } = useSelector(
     (state: RootState) => state.departments.allDepartments
   );
@@ -14,6 +19,10 @@ const DepartmentsComponent: React.FC = () => {
   useEffect(() => {
     dispatch(fetchDepartmentsRequest());
   }, []);
+
+  const handleDeleteDepartment = (id: number) => {
+    dispatch(deleteDepartmentRequest(id));
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -26,6 +35,9 @@ const DepartmentsComponent: React.FC = () => {
   return (
     <>
       <h2>Departments Administration</h2>
+      <Button onClick={() => navigate("/add-department")}>
+        Add new Department
+      </Button>
       <table className='table table-striped'>
         <thead>
           <tr>
@@ -38,6 +50,23 @@ const DepartmentsComponent: React.FC = () => {
             <tr key={dept.id}>
               <td>{dept.name}</td>
               <td>{dept.shortName}</td>
+              <td>
+                <Button
+                  onClick={() => navigate(`/department/subjects/${dept.id}`)}>
+                  Subjects
+                </Button>
+              </td>
+              <td>
+                <Button
+                  onClick={() => navigate(`/update-department/${dept.id}`)}>
+                  Update
+                </Button>
+              </td>
+              <td>
+                <Button onClick={() => handleDeleteDepartment(dept.id)}>
+                  Delete
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>

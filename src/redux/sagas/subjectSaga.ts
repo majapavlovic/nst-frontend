@@ -16,6 +16,7 @@ import {
 import {
   ADD_SUBJECT_REQUEST,
   DELETE_SUBJECT_REQUEST,
+  FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
   FETCH_SUBJECTS_REQUEST,
   GET_SUBJECT_REQUEST,
   UPDATE_SUBJECT_REQUEST,
@@ -103,6 +104,23 @@ function* updateSubject(action: {
   }
 }
 
+function* fetchSubjectsByDepartment(action: {
+  type: string;
+  payload: number;
+}): SagaIterator {
+  try {
+    const { payload } = action;
+    const response = yield call(api.get, `/subject/department/${payload}`);
+    yield put(fetchSubjectsSuccess(response.data));
+  } catch (error: any) {
+    if (error.response?.data?.message != null) {
+      yield put(fetchSubjectsFailure(error.response.data.message));
+    } else {
+      yield put(fetchSubjectsFailure(error.message));
+    }
+  }
+}
+
 export function* subjectSaga(): SagaIterator {
   yield all([
     takeLatest(FETCH_SUBJECTS_REQUEST, fetchSubjects),
@@ -110,6 +128,7 @@ export function* subjectSaga(): SagaIterator {
     takeLatest(ADD_SUBJECT_REQUEST, addSubject),
     takeLatest(UPDATE_SUBJECT_REQUEST, updateSubject),
     takeLatest(DELETE_SUBJECT_REQUEST, deleteSubject),
+    takeLatest(FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST, fetchSubjectsByDepartment),
   ]);
 }
 

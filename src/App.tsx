@@ -33,8 +33,16 @@ function App() {
         <Route path='/departments' element={<DepartmentsComponent />} />
         <Route path='/add-department' element={<DepartmentForm />} />
         <Route path='/update-department/:id' element={<DepartmentForm />} />
+        <Route
+          path='/department/subjects/:deptId'
+          element={<SubjectsComponent />}
+        />
         <Route path='/subjects' element={<SubjectsComponent />} />
         <Route path='/add-subject' element={<SubjectForm />} />
+        <Route
+          path='department/subjects/:deptId/add-subject'
+          element={<SubjectForm />}
+        />
         <Route path='/update-subject/:id' element={<SubjectForm />} />
       </Routes>
     </>

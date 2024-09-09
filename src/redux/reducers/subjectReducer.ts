@@ -11,6 +11,9 @@ import {
   GET_SUBJECT_REQUEST,
   GET_SUBJECT_SUCCESS,
   GET_SUBJECT_FAILURE,
+  FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
+  FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS,
+  FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
 } from "../../types/actionTypes";
 
 interface SubjectState {
@@ -28,6 +31,7 @@ interface SubjectState {
     loading: boolean;
     subject: Subject;
     error: string | null;
+    success: boolean;
   };
   deleteSubject: {
     message: string;
@@ -57,7 +61,7 @@ const initialState: SubjectState = {
     error: null,
   },
   getSubject: initialSubject,
-  addSubject: initialSubject,
+  addSubject: { ...initialSubject, success: false },
   deleteSubject: {
     message: "",
     error: "",
@@ -97,7 +101,12 @@ export const subjectReducer = (
     case ADD_SUBJECT_REQUEST:
       return {
         ...state,
-        addSubject: { ...state.addSubject, loading: true, error: null },
+        addSubject: {
+          ...state.addSubject,
+          loading: true,
+          error: null,
+          success: false,
+        },
       };
 
     case ADD_SUBJECT_SUCCESS:
@@ -107,6 +116,7 @@ export const subjectReducer = (
           ...state.addSubject,
           loading: false,
           subject: action.payload,
+          success: true,
         },
       };
 
@@ -117,6 +127,7 @@ export const subjectReducer = (
           ...state.addSubject,
           loading: false,
           error: action.payload,
+          success: false,
         },
       };
 
@@ -153,6 +164,32 @@ export const subjectReducer = (
         ...state,
         getSubject: {
           ...state.getSubject,
+          loading: false,
+          error: action.payload,
+        },
+      };
+
+    case FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST:
+      return {
+        ...state,
+        allSubjects: { ...state.allSubjects, loading: true, error: null },
+      };
+
+    case FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        allSubjects: {
+          ...state.allSubjects,
+          loading: false,
+          subjects: action.payload,
+        },
+      };
+
+    case FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE:
+      return {
+        ...state,
+        allSubjects: {
+          ...state.allSubjects,
           loading: false,
           error: action.payload,
         },
