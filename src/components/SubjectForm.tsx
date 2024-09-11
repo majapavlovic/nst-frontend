@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import {
   addSubjectRequest,
   getSubjectRequest,
   updateSubjectRequest,
+  clearAddSubjectState, // New action to clear the state
 } from "../redux/actions/subjectActions";
 import { fetchDepartmentsRequest } from "../redux/actions/departmentActions";
 import { Alert } from "react-bootstrap";
@@ -13,13 +14,13 @@ import { Alert } from "react-bootstrap";
 const SubjectForm: React.FC = () => {
   const { id, deptId } = useParams<{ id?: string; deptId?: string }>();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [subjectData, setSubjectData] = useState({
     name: "",
     espb: 0,
     departmentId: deptId ? Number(deptId) : 0,
   });
-
   const [isDeptDisabled] = useState(!!deptId);
 
   const [alertError, setAlertError] = useState("");
@@ -61,10 +62,18 @@ const SubjectForm: React.FC = () => {
   }, [isUpdateMode, subject, deptId]);
 
   useEffect(() => {
-    if (savedSubject) setAlertSuccess("Success");
-    else if (savedError) setAlertError(savedError);
-    else if (error) setAlertError(error);
-  }, [savedSubject, error, savedError]);
+    if (savedSubject && deptId) {
+      navigate(`/department/details/${deptId}`);
+      dispatch(clearAddSubjectState());
+    } else if (savedSubject && !deptId) {
+      navigate("/subjects");
+      dispatch(clearAddSubjectState());
+    } else if (savedError) {
+      setAlertError(savedError);
+    } else if (error) {
+      setAlertError(error);
+    }
+  }, [savedSubject, error, savedError, dispatch, deptId, navigate]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -87,7 +96,6 @@ const SubjectForm: React.FC = () => {
 
   return (
     <div className='form-container'>
-      {alertSuccess && <Alert variant='success'>{alertSuccess}</Alert>}
       {alertError && <Alert variant='danger'>{alertError}</Alert>}
       <h2>{isUpdateMode ? "Update Subject" : "Add New Subject"}</h2>
       <form onSubmit={handleSubmit}>

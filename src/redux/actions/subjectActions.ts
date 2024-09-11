@@ -18,6 +18,8 @@ import {
   FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
   FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS,
   FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
+  CLEAR_ADD_SUBJECT_STATE,
+  CLEAR_DELETE_SUBJECT_STATE,
 } from "../../types/actionTypes";
 
 export const fetchSubjectsRequest = () => ({
@@ -107,4 +109,12 @@ export const fetchSubjectsByDepartmentSuccess = (subjects: Subject[]) => ({
 export const fetchSubjectsByDepartmentFailure = (error: string) => ({
   type: FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
   payload: error,
+});
+
+export const clearAddSubjectState = () => ({
+  type: CLEAR_ADD_SUBJECT_STATE,
+});
+
+export const clearDeleteSubjectState = () => ({
+  type: CLEAR_DELETE_SUBJECT_STATE,
 });

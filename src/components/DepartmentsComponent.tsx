@@ -18,11 +18,21 @@ const DepartmentsComponent: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchDepartmentsRequest());
-  }, []);
+  }, [dispatch]);
 
   const handleDeleteDepartment = (id: number) => {
-    dispatch(deleteDepartmentRequest(id));
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this department?"
+    );
+    if (isConfirmed) {
+      dispatch(deleteDepartmentRequest(id));
+      window.location.reload();
+    }
   };
+
+  const deleteErr = useSelector(
+    (state: RootState) => state.subjects.deleteSubject.error
+  );
 
   if (loading) {
     return <div>Loading...</div>;
@@ -52,8 +62,8 @@ const DepartmentsComponent: React.FC = () => {
               <td>{dept.shortName}</td>
               <td>
                 <Button
-                  onClick={() => navigate(`/department/subjects/${dept.id}`)}>
-                  Subjects
+                  onClick={() => navigate(`/department/details/${dept.id}`)}>
+                  Details
                 </Button>
               </td>
               <td>

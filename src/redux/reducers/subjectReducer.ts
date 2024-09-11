@@ -14,6 +14,11 @@ import {
   FETCH_SUBJECTS_BY_DEPARTMENT_REQUEST,
   FETCH_SUBJECTS_BY_DEPARTMENT_SUCCESS,
   FETCH_SUBJECTS_BY_DEPARTMENT_FAILURE,
+  CLEAR_ADD_SUBJECT_STATE,
+  UPDATE_SUBJECT_FAILURE,
+  UPDATE_SUBJECT_SUCCESS,
+  UPDATE_SUBJECT_REQUEST,
+  CLEAR_DELETE_SUBJECT_STATE,
 } from "../../types/actionTypes";
 
 interface SubjectState {
@@ -192,6 +197,48 @@ export const subjectReducer = (
           ...state.allSubjects,
           loading: false,
           error: action.payload,
+        },
+      };
+    case CLEAR_ADD_SUBJECT_STATE:
+      return {
+        ...state,
+        addSubject: { ...state.addSubject, success: false, error: null },
+      };
+    case CLEAR_DELETE_SUBJECT_STATE:
+      return {
+        ...state,
+        deleteSubject: { message: "", error: "" },
+      };
+    case UPDATE_SUBJECT_REQUEST:
+      return {
+        ...state,
+        addSubject: {
+          ...state.addSubject,
+          loading: true,
+          error: null,
+          success: false,
+        },
+      };
+
+    case UPDATE_SUBJECT_SUCCESS:
+      return {
+        ...state,
+        addSubject: {
+          ...state.addSubject,
+          loading: false,
+          subject: action.payload,
+          success: true,
+        },
+      };
+
+    case UPDATE_SUBJECT_FAILURE:
+      return {
+        ...state,
+        addSubject: {
+          ...state.addSubject,
+          loading: false,
+          error: action.payload,
+          success: false,
         },
       };
 
