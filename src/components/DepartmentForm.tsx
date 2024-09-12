@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import {
   addDepartmentRequest,
+  clearAddDepartmentState,
   getDepartmentsRequest,
   updateDepartmentRequest,
 } from "../redux/actions/departmentActions";
@@ -12,6 +13,7 @@ import { Alert } from "react-bootstrap";
 const DepartmentForm: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [departmentData, setDepartmentData] = useState({
     name: "",
@@ -58,9 +60,15 @@ const DepartmentForm: React.FC = () => {
   };
 
   useEffect(() => {
-    if (savedErr) setAlertError(savedErr);
-    if (error) setAlertError(error);
-  }, [error, savedErr]);
+    if (savedDept) {
+      navigate("/departments");
+      dispatch(clearAddDepartmentState());
+    } else if (savedErr) {
+      setAlertError(savedErr);
+    } else if (error) {
+      setAlertError(error);
+    }
+  }, [savedDept, error, savedErr, dispatch, navigate]);
 
   useEffect(() => {
     if (savedDept) setAlertSuccess("Success");

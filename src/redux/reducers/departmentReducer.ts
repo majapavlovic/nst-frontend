@@ -11,6 +11,11 @@ import {
   ADD_DEPARTMENT_FAILURE,
   DELETE_DEPARTMENT_SUCCESS,
   DELETE_DEPARTMENT_FAILURE,
+  CLEAR_ADD_DEPARTMENT_STATE,
+  CLEAR_DELETE_DEPARTMENT_STATE,
+  UPDATE_DEPARTMENT_SUCCESS,
+  UPDATE_DEPARTMENT_FAILURE,
+  UPDATE_DEPARTMENT_REQUEST,
 } from "../../types/actionTypes";
 
 interface DepartmentState {
@@ -164,6 +169,53 @@ export const departmentReducer = (
         deleteDepartment: { ...state.deleteDepartment, error: action.payload },
       };
 
+    case CLEAR_ADD_DEPARTMENT_STATE:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          success: false,
+          error: null,
+        },
+      };
+    case CLEAR_DELETE_DEPARTMENT_STATE:
+      return {
+        ...state,
+        deleteDepartment: { message: "", error: "" },
+      };
+
+    case UPDATE_DEPARTMENT_REQUEST:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: true,
+          error: null,
+          success: false,
+        },
+      };
+
+    case UPDATE_DEPARTMENT_SUCCESS:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: false,
+          department: action.payload,
+          success: true,
+        },
+      };
+
+    case UPDATE_DEPARTMENT_FAILURE:
+      return {
+        ...state,
+        addDepartment: {
+          ...state.addDepartment,
+          loading: false,
+          error: action.payload,
+          success: false,
+        },
+      };
     default:
       return state;
   }

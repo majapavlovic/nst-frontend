@@ -6,7 +6,7 @@ import {
   addSubjectRequest,
   getSubjectRequest,
   updateSubjectRequest,
-  clearAddSubjectState, // New action to clear the state
+  clearAddSubjectState,
 } from "../redux/actions/subjectActions";
 import { fetchDepartmentsRequest } from "../redux/actions/departmentActions";
 import { Alert } from "react-bootstrap";

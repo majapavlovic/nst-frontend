@@ -15,6 +15,8 @@ import {
   UPDATE_DEPARTMENT_REQUEST,
   UPDATE_DEPARTMENT_SUCCESS,
   UPDATE_DEPARTMENT_FAILURE,
+  CLEAR_ADD_DEPARTMENT_STATE,
+  CLEAR_DELETE_DEPARTMENT_STATE,
 } from "../../types/actionTypes";
 
 export const fetchDepartmentsRequest = () => ({
@@ -89,4 +91,12 @@ export const updateDepartmentSuccess = (payload: Department) => ({
 export const updateDepartmentFailure = (payload: string) => ({
   type: UPDATE_DEPARTMENT_FAILURE,
   payload,
+});
+
+export const clearAddDepartmentState = () => ({
+  type: CLEAR_ADD_DEPARTMENT_STATE,
+});
+
+export const clearDeleteDepartmentState = () => ({
+  type: CLEAR_DELETE_DEPARTMENT_STATE,
 });
